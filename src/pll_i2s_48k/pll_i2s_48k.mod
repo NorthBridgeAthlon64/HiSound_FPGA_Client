@@ -1,0 +1,35 @@
+-series GW1NSR
+-device GW1NSR-4C
+-device_version 
+-package QFN48G
+-part_number GW1NSR-LV4CQN48GC6/I5
+
+
+-mod_name pll_i2s_48k
+-file_name pll_i2s_48k
+-path D:/GowinProject/TangNano4k/Project/HiSound_Client/src/pll_i2s_48k/
+-type PLL
+-pllvr true
+-file_type vlg
+-ip_version 1.0
+-dev_type GW1NSR-4C
+-dyn_idiv_sel false
+-idiv_sel 1
+-dyn_fbdiv_sel false
+-fbdiv_sel 4
+-dyn_odiv_sel false
+-odiv_sel 8
+-dyn_da_en true
+-rst_sig true
+-rst_sig_p false
+-pll_reg false
+-fclkin 24.576
+-clkfb_sel 0
+-en_lock true
+-clkout_bypass false
+-clkout_ft_dir 1
+-en_clkoutp false
+-clkoutp_bypass false
+-en_clkoutd false
+-clkoutd_bypass false
+-en_clkoutd3 false

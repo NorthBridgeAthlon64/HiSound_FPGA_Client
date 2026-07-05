@@ -1,0 +1,10 @@
+# Gowin build/implementation artifacts
+impl/
+
+# User-specific project settings
+*.gprj.user
+
+# Temporary and log files
+*.log
+*.bak
+*~

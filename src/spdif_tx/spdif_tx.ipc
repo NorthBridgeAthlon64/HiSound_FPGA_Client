@@ -1,0 +1,13 @@
+[General]
+ipc_version=4
+file=spdif_tx
+module=spdif_tx
+target_device=gw1nsr4c-001
+type=spdif_tx
+version=1.0
+
+[Config]
+DISABLE_IO_INSERTION=true
+LANG=0
+SPDIF_DATA_WIDTH=24
+Synthesis_tool=GowinSynthesis

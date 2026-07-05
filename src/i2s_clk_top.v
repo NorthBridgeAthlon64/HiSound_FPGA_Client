@@ -1,40 +1,50 @@
 module i2s_clk_top(
-    input wire clk_24_576,      // 24.576MHz晶振（48KHz系列）
-    input wire clk_22_5792,     // 22.5792MHz晶振（44.1KHz系列）
-    input wire sample_sel,      // 采样率选择：0=48KHz, 1=44.1KHz
-    input wire[1:0] dev_cs_bin,
-    input wire resetn,          // 低电平复位
+    input wire clk_24_576,      //24.576MHz晶振（48KHz系列）
+    input wire clk_22_5792,     //22.5792MHz晶振（44.1KHz系列）
+    input wire sample_sel,      //采样率选择：0=48KHz, 1=44.1KHz
     
-    // I2S时钟输出（ADC用）
-    output wire mclk0,           // 主时钟
-    output wire bclk0,           // 位时钟
-    output wire fsclk0,          // 帧时钟
-    
-    // I2S时钟输出（DAC或其他设备用）
+    //I2S输出（DAC用）        
+    output wire bclk0,           //位时钟
+    output wire fsclk0,          //帧时钟
+    output wire do0,
+
+    //I2S输出（DAC-RJ12）
+    output wire mclk1,            //主时钟
     output wire bclk1,
     output wire fsclk1,
+    output wire do1,
 
+    //SPDIF输出
+    output wire spdif_do,
 
-    input wire data_in,
-    output wire[2:0] data_out
+    //选择是ADC还是RJ12还是PDM 三选一输入
+    //ADC:00 RJ12:01 PDM:10 Reset:11
+    input wire[1:0] dev_cs_bin_3863,
+    //数据选择器可以由外部开关与3863软GPIO双重控制，下面可由与或分配优先级
+    //与：软硬件有一个拉高即可；或：软硬件都拉高才可以。两种模式下，硬件开关仲裁权均更高  
+    input wire[1:0] dev_cs_bin_switch,
+
+    //I2S输入（Hi3863）
+    output wire bclk2,
+    output wire fsclk2,
+    input wire di2
+
 );
+    //高电平有效，由
+    wire reset;
     
-
-    wire reset = !resetn;
-    
-    // PLL输出
+    //PLL输出
     wire pll_4x_48k, locked_48k;
     wire pll_4x_44k1, locked_44k1;
     
-    // MUX 输出
+    //MUX 输出
     wire pll_4x, locked;
     
-    // 时钟生成输出
+    //时钟生成输出
     wire mclk, bclk, fsclk;
-
     wire cnt_reset;
     
-    // 1. PLL封装（两个PLL并行工作）
+    //PLL封装（双PLL并行干活）
     i2s_pll_wrapper u_pll (
         .clk_24_576    (clk_24_576),
         .clk_22_5792   (clk_22_5792),
@@ -47,8 +57,8 @@ module i2s_clk_top(
         .locked_44k1   (locked_44k1)
     );
     
-    // 2. 时钟 mux2
-    i2s_mux2 u_mux (
+    //时钟mux2
+    i2s_clk_mux2 u_mux (
         .clk_48k       (pll_4x_48k),
         .locked_48k    (locked_48k),
         .clk_44k1      (pll_4x_44k1),
@@ -59,7 +69,7 @@ module i2s_clk_top(
         .locked        (locked)
     );
 
-    // 2.5 切换检测，cnt_reset 复位计数器
+    //时钟切换检测，cnt_reset 复位计数器
     i2s_dual_pll_sync u_sync (
         .clk           (pll_4x),
         .sample_sel    (sample_sel),
@@ -67,7 +77,7 @@ module i2s_clk_top(
         .cnt_reset     (cnt_reset)
     );
     
-    // 3. 时钟分频生成器
+    //I2S时钟分频生成器
     i2s_clk_gen u_clkgen (
         .pll_4x        (pll_4x),
         .locked        (locked),
@@ -76,20 +86,32 @@ module i2s_clk_top(
         .mclk          (mclk),
         .bclk          (bclk),
         .fsclk         (fsclk)
-    );
+    );  
     
-    
-    // ADC时钟
-    assign mclk0  = mclk;
+    // DAC时钟
     assign bclk0  = bclk;
     assign fsclk0 = fsclk;
 
     
-    // 第二路I2S时钟（DAC等）
+    // RJ12时钟
+    assign mclk1  = mclk;
     assign bclk1  = bclk;
     assign fsclk1 = fsclk;
+
+
+    //3863时钟
+    assign bclk2 = bclk;
+    assign fsclk2 = fsclk;
     
-    // 数据mux2直通
-    assign data_out = data_in;
+    //DAC、DAC-RJ12、SPDIF、Reset对接mux4
+    i2s_data_mux4 mux4(
+    //归一化data_cs解码器，按位与
+        .cs_bin(dev_cs_bin_3863 | dev_cs_bin_switch),
+        .do0(do0),
+        .do1(do1),
+        .do2(spdif_do),
+        .di(di2),
+        .reset(reset) //高电平有效
+    );
 
 endmodule

@@ -6,13 +6,14 @@
     <Device name="GW1NSR-4C" pn="GW1NSR-LV4CQN48GC6/I5">gw1nsr4c-001</Device>
     <FileList>
         <File path="src/i2s_clk_gen.v" type="file.verilog" enable="1"/>
+        <File path="src/i2s_clk_mux2.v" type="file.verilog" enable="1"/>
         <File path="src/i2s_clk_top.v" type="file.verilog" enable="1"/>
-        <File path="src/i2s_dev_cs.v" type="file.verilog" enable="1"/>
+        <File path="src/i2s_data_mux4.v" type="file.verilog" enable="1"/>
         <File path="src/i2s_dual_pll_sync.v" type="file.verilog" enable="1"/>
-        <File path="src/i2s_mux2.v" type="file.verilog" enable="1"/>
         <File path="src/i2s_pll_wrapper.v" type="file.verilog" enable="1"/>
         <File path="src/pll_i2s_44_1k/pll_i2s_44_1k.v" type="file.verilog" enable="1"/>
         <File path="src/pll_i2s_48k/pll_i2s_48k.v" type="file.verilog" enable="1"/>
+        <File path="src/spdif_tx/spdif_tx.v" type="file.verilog" enable="1"/>
         <File path="src/HiSound_Client.cst" type="file.cst" enable="1"/>
     </FileList>
 </Project>

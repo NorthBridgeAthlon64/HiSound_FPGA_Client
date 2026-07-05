@@ -1,6 +1,9 @@
 # Gowin build/implementation artifacts
 impl/
 
+# Gowin IP-core synthesis temp outputs
+**/temp/
+
 # User-specific project settings
 *.gprj.user
 

@@ -1,0 +1,12 @@
+[General]
+ipc_version=4
+file=i2s_clk_dcs
+module=i2s_clk_dcs
+target_device=gw1nsr4c-001
+type=clock_dcs
+version=1.0
+
+[Config]
+DCS_Mode=RISING
+Glitchless_Mode=true
+Language=0

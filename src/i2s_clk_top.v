@@ -20,17 +20,14 @@ module i2s_clk_top(
     //选择是ADC还是RJ12还是PDM 三选一输入
     //ADC:00 RJ12:01 PDM:10 Reset:11
     input wire[1:0] dev_cs_bin_3863,
-    //数据选择器可以由外部开关与3863软GPIO双重控制，下面可由与或分配优先级
-    //与：软硬件有一个拉高即可；或：软硬件都拉高才可以。两种模式下，硬件开关仲裁权均更高  
-    input wire[1:0] dev_cs_bin_switch,
-
+    
     //I2S输入（Hi3863）
     output wire bclk2,
     output wire fsclk2,
     input wire di2
 
 );
-    //高电平有效，由
+    //高电平有效
     wire reset;
     
     //PLL输出
@@ -43,7 +40,7 @@ module i2s_clk_top(
     //时钟生成输出
     wire mclk, bclk, fsclk;
     wire cnt_reset;
-    
+       
     //PLL封装（双PLL并行干活）
     i2s_pll_wrapper u_pll (
         .clk_24_576    (clk_24_576),
@@ -59,9 +56,9 @@ module i2s_clk_top(
     
     //时钟mux2
     i2s_clk_mux2 u_mux (
-        .clk_48k       (pll_4x_48k),
+        .pll_4x_48k    (pll_4x_48k),
         .locked_48k    (locked_48k),
-        .clk_44k1      (pll_4x_44k1),
+        .pll_4x_44k1   (pll_4x_44k1),
         .locked_44k1   (locked_44k1),
         .sample_sel    (sample_sel),
         
@@ -106,7 +103,7 @@ module i2s_clk_top(
     //DAC、DAC-RJ12、SPDIF、Reset对接mux4
     i2s_data_mux4 mux4(
     //归一化data_cs解码器，按位与
-        .cs_bin(dev_cs_bin_3863 | dev_cs_bin_switch),
+        .cs_bin(dev_cs_bin_3863),
         .do0(do0),
         .do1(do1),
         .do2(spdif_do),

@@ -2,7 +2,7 @@
 ipc_version=4
 file=spdif_tx
 module=spdif_tx
-target_device=gw1nsr4c-001
+target_device=gw1nsr4c-000
 type=spdif_tx
 version=1.0
 

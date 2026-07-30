@@ -40,6 +40,9 @@ module i2s_clk_top(
     //时钟生成输出
     wire mclk, bclk, fsclk;
     wire cnt_reset;
+
+    //mux分配给SPDIF通道的I2S数据
+    wire i2s_di_spdif;
        
     //PLL封装（双PLL并行干活）
     i2s_pll_wrapper u_pll (
@@ -106,9 +109,19 @@ module i2s_clk_top(
         .cs_bin(dev_cs_bin_3863),
         .do0(do0),
         .do1(do1),
-        .do2(spdif_do),
+        .do2(i2s_di_spdif),
         .di(di2),
         .reset(reset) //高电平有效
+    );
+
+    //I2S转SPDIF光纤输出 (Gowin SPDIF_TX IP, IPUG547)
+    i2s_spdif_converter u_i2s2spdif(
+        .bclk      (bclk),
+        .fsclk     (fsclk),
+        .data      (i2s_di_spdif),
+        .sample_sel(sample_sel),
+        .reset     (reset),
+        .spdif_o   (spdif_do)
     );
 
 endmodule

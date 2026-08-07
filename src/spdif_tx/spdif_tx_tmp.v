@@ -3,9 +3,9 @@
 //File Title: Template file for instantiation
 //Tool Version: V1.9.12.02_SP1 (64-bit)
 //IP Version: 1.0
-//Part Number: GW1NSR-LV4CQN48GC6/I5
+//Part Number: GW1NSR-LV4CQN48PC6/I5
 //Device: GW1NSR-4C
-//Created Time: Sun Jul  5 11:47:35 2026
+//Created Time: Thu Jul 30 16:26:12 2026
 
 //Change the instance name and port connections to the signal names
 //--------Copy here to design--------

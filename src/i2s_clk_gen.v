@@ -1,4 +1,4 @@
-module i2s_clk_gen(
+    module i2s_clk_gen(
     input wire pll_4x,         // PLL输出时钟
     input wire locked,         // PLL锁定状态
     input wire reset,         //  高电平复位

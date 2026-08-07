@@ -19,5 +19,6 @@
         <File path="src/pll_i2s_48k/pll_i2s_48k.v" type="file.verilog" enable="1"/>
         <File path="src/spdif_tx/spdif_tx.v" type="file.verilog" enable="1"/>
         <File path="src/HiSound_Client.cst" type="file.cst" enable="1"/>
+        <File path="src/HiSound_Client.sdc" type="file.sdc" enable="1"/>
     </FileList>
 </Project>
